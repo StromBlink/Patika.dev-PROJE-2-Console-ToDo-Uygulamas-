@@ -1,0 +1,31 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ToDoUygulaması
+{
+    class ToDo
+    {
+        string baslik;
+        string icerik;
+        string kisi;
+        string buyukluk;
+
+        public string Baslik { get => baslik; set => baslik = value; }
+        public string Icerik { get => icerik; set => icerik = value; }
+        public string Kisi { get => kisi; set => kisi = value; }
+        public string Buyukluk { get => buyukluk; set => buyukluk = value; }
+        public ToDo(string baslik, string icerik, string kisi, string buyukluk )
+        {
+            Baslik = baslik;
+            Icerik = icerik;
+            Kisi = kisi;
+            Buyukluk = buyukluk;
+        }
+        public ToDo()
+        {
+        }
+    }
+}
