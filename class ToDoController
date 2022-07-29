@@ -1,0 +1,452 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ToDoUygulaması
+{
+    class ToDoController
+    {
+        public static List<ToDo> toDo_Line = new List<ToDo>();
+        public static List<ToDo> inProgress_Line = new List<ToDo>();
+        public static List<ToDo> done_Line = new List<ToDo>();
+         
+
+        public enum Enumbuyukluk : byte
+        {
+            XS = 1,
+            S,
+            M,
+            L,
+            XL
+        }
+        public enum Teams : byte { GameDevelepor=1, Game_Tester, Designer, Audio_Engineers, Concept_Artist }
+        public void Varsayilan()
+        {
+            toDo_Line.Add(new ToDo() { Baslik = "Elma", Icerik = "Gorsel iyilestirme", Kisi = "5", Buyukluk = "1" });
+            toDo_Line.Add(new ToDo() { Baslik = "Hareket etme", Icerik = "engellerde buglar", Kisi = "1", Buyukluk = "3" });
+            toDo_Line.Add(new ToDo() { Baslik = "Geribildirim", Icerik = "oyundaki buglar listelensin", Kisi = "2", Buyukluk = "3" });
+            inProgress_Line.Add(new ToDo() { Baslik = "Gurultu", Icerik = "Selale npc sesleri kapatiyor", Kisi = "4", Buyukluk = "4" });
+            inProgress_Line.Add(new ToDo() { Baslik = "Sandalye", Icerik = "sirt kisimlarina desen eklenicek", Kisi = "5", Buyukluk = "1" });
+             
+           
+        }
+        public void MainMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("Lütfen yapmak istediğiniz işlemi seçiniz ");
+                Console.WriteLine(" *******************************************");
+                Console.WriteLine("(1) Board Listelemek");
+                Console.WriteLine("(2) Board'a Kart Eklemek");
+                Console.WriteLine("(3) Board'dan Kart Silmek");
+                Console.WriteLine("(4) Kart Taşımak");
+                Console.WriteLine("(5) Kapat");
+                string input = Console.ReadLine();
+                if (input == "1" || input == "2" || input == "3" || input == "4" || input == "5")
+                {
+                    switch (input)
+                    {
+                        case "1":
+                            List();
+                            break;
+                        case "2":
+                            Add();
+                            break;
+                        case "3":
+                            Delete();
+                            break;
+                        case "4":
+                            Trasport();
+                            break;
+                        case "5":
+                            return;
+
+
+
+                    }
+                }
+                else                 
+                    Console.WriteLine(" Yanlis karakter girdiniz lutfen tekrar deneyin");
+                 
+            }
+        }
+
+        public void List()
+        {
+
+
+
+            Console.WriteLine("TODO Line");
+            Console.WriteLine("************************");
+            for (int i = 0; i < toDo_Line.Count; i++)
+            {
+                enumbuyukluk enumbuyukluk = (enumbuyukluk)Convert.ToByte(toDo_Line[i].Buyukluk);
+                Teams teams = (Teams)Convert.ToByte(toDo_Line[i].Kisi);
+                Console.WriteLine("Başlık      :" + toDo_Line[i].Baslik);
+                Console.WriteLine("İçerik      :" + toDo_Line[i].Icerik);
+                Console.WriteLine("Team        :" + teams); ;
+                Console.WriteLine("Büyüklük    :" + enumbuyukluk);
+                Console.WriteLine("-");
+
+            }
+
+            Console.WriteLine("IN PROGRESS Line");
+            Console.WriteLine("************************");
+            for (int x = 0; x < inProgress_Line.Count; x++)
+            {
+                enumbuyukluk enumbuyukluk = (enumbuyukluk)Convert.ToByte(inProgress_Line[x].Buyukluk);
+                Teams teams = (Teams)Convert.ToByte(inProgress_Line[x].Kisi);
+                Console.WriteLine("Başlık      :" + inProgress_Line[x].Baslik);
+                Console.WriteLine("İçerik      :" + inProgress_Line[x].Icerik);
+                Console.WriteLine("Team        :" + teams);
+                Console.WriteLine("Büyüklük    :" + enumbuyukluk);
+                Console.WriteLine("-");
+
+            }
+            Console.WriteLine("DONE Line");
+            Console.WriteLine("************************");
+            for (int y = 0; y < done_Line.Count; y++)
+            {
+                enumbuyukluk enumbuyukluk = (enumbuyukluk)Convert.ToByte(done_Line[y].Buyukluk);
+                Teams teams = (Teams)Convert.ToByte(done_Line[y].Kisi);
+
+                Console.WriteLine("Başlık      :" + done_Line[y].Baslik);
+                Console.WriteLine("İçerik      :" + done_Line[y].Icerik);
+                Console.WriteLine("Team        :" + teams);
+                Console.WriteLine("Büyüklük    :" + enumbuyukluk);
+                Console.WriteLine("-");
+
+            }
+        }
+        public void Add() {
+
+
+            Console.WriteLine("TODO Line");
+            Console.WriteLine("************************");
+            Console.Write("Başlık Giriniz                                  :"); string baslik = Console.ReadLine();
+            Console.Write("İçerik Giriniz                                  :"); string icerik = Console.ReadLine();
+            Console.Write("Büyüklük Seçiniz -> XS(1),S(2),M(3),L(4),XL(5)  :"); string buyukluk = Console.ReadLine();
+            Console.Write("Team Seçiniz   -> GameDevelepor(1),Game_Tester(2),Designer(3),Audio_Engineers(4),Concept_Artist(5)  :"); string kisi = Console.ReadLine();
+            Console.WriteLine("-");
+            toDo_Line.Add(new ToDo() { Baslik = baslik, Icerik = icerik, Kisi = kisi, Buyukluk = buyukluk });
+
+        }
+
+        public void Delete()
+        {
+            Console.WriteLine(" Öncelikle silmek istediğiniz kartı seçmeniz gerekiyor.");
+
+            Console.WriteLine("Lütfen kart başlığını yazınız:  ");
+            string girilenisim = Console.ReadLine();
+            string input;
+            int kontrolsayisi=-1;
+            for (int i = 0; i < toDo_Line.Count; i++)
+            {
+
+                if (toDo_Line[i].Baslik == girilenisim)
+                {
+                    kontrolsayisi++;
+                    while (true)
+                    {
+                        Console.Write(toDo_Line[i].Baslik + " baslikli  TODO Line karti silinmek üzere, onaylıyor musunuz ? Y/N  :");
+                        input = Console.ReadLine();
+                        if (input == "Y")
+                        {
+                            toDo_Line.Remove(toDo_Line[i]);
+
+
+                            return;
+                        }
+                        else if (input == "N")
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine();
+
+                            Console.WriteLine(" Yanlis karakter girdiniz");
+                        }
+                    }
+                }
+            }
+            for (int a = 0; a < inProgress_Line.Count; a++)
+            {
+                if (inProgress_Line[a].Baslik == girilenisim)
+                {
+                    kontrolsayisi++;
+                    while (true)
+                    {
+                        Console.Write(inProgress_Line[a].Baslik + " baslikli  IN PROGRESS Line karti silinmek üzere, onaylıyor musunuz ? Y/N  :");
+                        input = Console.ReadLine();
+                        if (input == "Y")
+                        {
+                            inProgress_Line.Remove(inProgress_Line[a]);
+
+
+                            return;
+                        }
+                        else if (input == "N")
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+            for (int x = 0; x < done_Line.Count; x++)
+            {
+                if (done_Line[x].Baslik == girilenisim)
+                {
+                    kontrolsayisi++;
+                    while (true)
+                    {
+                        Console.Write(done_Line[x].Baslik + " baslikli  DONE Line karti silinmek üzere, onaylıyor musunuz ? Y/N  :");
+                        input = Console.ReadLine();
+                        if (input == "Y")
+                        {
+                            done_Line.Remove(done_Line[x]);
+
+
+                            return;
+                        }
+                        else if (input == "N")
+                        {
+                            return;
+                        }
+                    }
+                }
+                
+                 
+
+            }
+             if(kontrolsayisi == -1)
+                while (true)
+                {
+                    Console.WriteLine(" Aradığınız krtiterlere uygun kart board'da bulunamadı. Lütfen bir seçim yapınız.");
+                    Console.WriteLine("*Silmeyi sonlandırmak için : (1)");
+                    Console.WriteLine("*Yeniden denemek için : (2)");
+
+                    input = Console.ReadLine();
+                    if (input == "1")
+                        return;
+
+                    else if (input == "2")
+                    {
+                        Delete();
+                        return;
+                    }
+                    else
+                        Console.WriteLine(" Yanlis karakter girdiniz lutfen tekrar deneyin");
+
+                }
+             
+
+
+
+
+        }
+        public void Trasport() 
+        {
+            Console.WriteLine(" Öncelikle silmek istediğiniz kartı seçmeniz gerekiyor.");
+
+            Console.WriteLine("Lütfen kart başlığını yazınız:  ");
+            string girilenisim = Console.ReadLine();
+            string input;
+            int kontrolsayisi = -1;
+            for (int i = 0; i < toDo_Line.Count; i++)
+            {
+
+                if (toDo_Line[i].Baslik == girilenisim)
+                {
+                    kontrolsayisi++;
+                    while (true)
+                    {
+
+                        enumbuyukluk enumbuyukluk = (enumbuyukluk)Convert.ToByte(toDo_Line[i].Buyukluk);
+                        Teams teams = (Teams)Convert.ToByte(toDo_Line[i].Kisi);
+                        Console.WriteLine("Başlık      :" + toDo_Line[i].Baslik);
+                        Console.WriteLine("İçerik      :" + toDo_Line[i].Icerik);
+                        Console.WriteLine("Team        :" + teams);
+                        Console.WriteLine("Büyüklük    :" + enumbuyukluk);
+                        Console.WriteLine("Line        :" + "Done Line");
+                        Console.WriteLine(" ");
+                        Console.WriteLine(" Lütfen taşımak istediğiniz Line'ı seçiniz: ");
+                        Console.WriteLine("(1) TODO");
+                        Console.WriteLine("(2) IN PROGRESS");
+                        Console.WriteLine("(3) DONE");
+                        input = Console.ReadLine();
+                        if (input == "1" || input == "2" || input == "3")
+                        {
+                            switch (input)
+                            {
+                                case "1":
+
+                                    
+
+                                    List();
+                                    return;
+                                case "2":
+
+                                    inProgress_Line.Add(new ToDo() { Baslik = toDo_Line[i].Baslik, Icerik = toDo_Line[i].Icerik, Kisi = toDo_Line[i].Kisi, Buyukluk = toDo_Line[i].Buyukluk });
+                                    toDo_Line.Remove(toDo_Line[i]);
+                                    List();
+                                    return;
+                                case "3":
+                                    done_Line.Add(new ToDo() { Baslik = toDo_Line[i].Baslik, Icerik = toDo_Line[i].Icerik, Kisi = toDo_Line[i].Kisi, Buyukluk = toDo_Line[i].Buyukluk });
+                                    toDo_Line.Remove(toDo_Line[i]);
+                                    List();
+
+
+                                    return;
+                            }
+
+
+                        }
+                        else
+                        {
+                            Console.WriteLine(" Yanlis karakter girdiniz lutfen tekrar deneyin");
+                        }
+
+                    }
+                }
+            }
+            for (int a = 0; a < inProgress_Line.Count; a++)
+            {
+                if (inProgress_Line[a].Baslik == girilenisim)
+                {
+                    kontrolsayisi++;
+                    while (true)
+                    {
+                         
+                        enumbuyukluk enumbuyukluk = (enumbuyukluk)Convert.ToByte(inProgress_Line[a].Buyukluk);
+                        Teams teams=(Teams)Convert.ToByte(inProgress_Line[a].Kisi);
+
+                        Console.WriteLine("Başlık      :" + inProgress_Line[a].Baslik);
+                        Console.WriteLine("İçerik      :" + inProgress_Line[a].Icerik);
+                        Console.WriteLine("Team        :" + teams);
+                        Console.WriteLine("Büyüklük    :" + enumbuyukluk);
+                        Console.WriteLine("Line        :" + "Done Line");
+                        Console.WriteLine(" ");
+                        Console.WriteLine(" Lütfen taşımak istediğiniz Line'ı seçiniz: ");
+                        Console.WriteLine("(1) TODO");
+                        Console.WriteLine("(2) IN PROGRESS");
+                        Console.WriteLine("(3) DONE");
+                        input = Console.ReadLine();
+                        if (input == "1" || input == "2" || input == "3")
+                        {
+                            switch (input)
+                            {
+                                case "1":
+
+                                    toDo_Line.Add(new ToDo() { Baslik = inProgress_Line[a].Baslik, Icerik = inProgress_Line[a].Icerik, Kisi = inProgress_Line[a].Kisi, Buyukluk = inProgress_Line[a].Buyukluk });
+                                    inProgress_Line .Remove(inProgress_Line[a]);
+                                    
+                                    List();
+                                    return;
+                                case "2":
+
+                                   
+                                    List();
+                                    return;
+                                case "3":
+                                    done_Line.Add(new ToDo() { Baslik = inProgress_Line[a].Baslik, Icerik = inProgress_Line[a].Icerik, Kisi = inProgress_Line[a].Kisi, Buyukluk = inProgress_Line[a].Buyukluk });
+                                    inProgress_Line .Remove(inProgress_Line[a]);
+                                    List();
+
+
+                                    return;
+                            }
+
+
+                        }
+                        else
+                        {
+                            Console.WriteLine(" Yanlis karakter girdiniz lutfen tekrar deneyin");
+                        }
+             
+                    }
+                }
+            }
+            for (int x = 0; x < done_Line.Count; x++)
+            {
+                if (done_Line[x].Baslik == girilenisim)
+                {
+                    kontrolsayisi++;
+                    enumbuyukluk enumbuyukluk = (enumbuyukluk)Convert.ToByte(done_Line[x].Buyukluk);
+                    Teams teams = (Teams)Convert.ToByte(done_Line[x].Kisi);
+                    while (true) { 
+
+                    Console.WriteLine("Başlık      :" + done_Line[x].Baslik);
+                    Console.WriteLine("İçerik      :" + done_Line[x].Icerik);
+                    Console.WriteLine("Team        :" + teams);
+                    Console.WriteLine("Büyüklük    :" + enumbuyukluk);
+                    Console.WriteLine("Line        :"+ "Done Line");
+                    Console.WriteLine(" ");
+                    Console.WriteLine(" Lütfen taşımak istediğiniz Line'ı seçiniz: ");
+                    Console.WriteLine("(1) TODO");
+                    Console.WriteLine("(2) IN PROGRESS");
+                    Console.WriteLine("(3) DONE");
+
+                    input = Console.ReadLine();
+                    if (input == "1" || input == "2" || input == "3")
+                    {
+                        switch (input)
+                    {
+                        case "1":
+                            
+                            toDo_Line.Add(new ToDo() { Baslik = done_Line[x].Baslik, Icerik = done_Line[x].Icerik, Kisi = done_Line[x].Kisi, Buyukluk = done_Line[x].Buyukluk });
+                            done_Line.Remove(done_Line[x]);
+                                List();
+                            return;
+                        case "2":
+                            
+                            inProgress_Line.Add(new ToDo() { Baslik = done_Line[x].Baslik, Icerik = done_Line[x].Icerik, Kisi = done_Line[x].Kisi, Buyukluk = done_Line[x].Buyukluk });
+                                done_Line.Remove(done_Line[x]);
+                                List();
+                            return;
+                        case "3":
+                                List();
+
+
+                                return;
+                        } 
+                    
+
+                    }
+                        else
+                        {
+                            Console.WriteLine(" Yanlis karakter girdiniz lutfen tekrar deneyin");
+                        }
+                    }
+                }
+
+
+
+            }
+            if (kontrolsayisi == -1)
+                while (true)
+                {
+                    Console.WriteLine(" Aradığınız krtiterlere uygun kart board'da bulunamadı. Lütfen bir seçim yapınız.");
+                    Console.WriteLine("*İşlemi sonlandırmak için : (1)");
+                    Console.WriteLine("*Yeniden denemek için : (2)");
+
+                    input = Console.ReadLine();
+                    if (input == "1")
+                        return;
+
+                    else if (input == "2")
+                    {
+                        Delete();
+                        return;
+                    }
+                    else
+                        Console.WriteLine(" Yanlis karakter girdiniz lutfen tekrar deneyin");
+
+                }
+        }
+
+
+    } }
+
